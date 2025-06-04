@@ -1,0 +1,10 @@
+LICENSE
+README.md
+setup.py
+utils/__init__.py
+utils/metrics.py
+utils/scaler.py
+verdict_benchmark.egg-info/PKG-INFO
+verdict_benchmark.egg-info/SOURCES.txt
+verdict_benchmark.egg-info/dependency_links.txt
+verdict_benchmark.egg-info/top_level.txt
