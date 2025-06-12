@@ -10,7 +10,7 @@ from models.mlp import MLPRegressor
 from utils.metrics import mse_loss
 
 #Usage: python train.py --config configs/mlp.yaml
-
+# https://hpc.cs.ucl.ac.uk/account-form/
 
 def set_seed(seed):
     torch.manual_seed(seed)
