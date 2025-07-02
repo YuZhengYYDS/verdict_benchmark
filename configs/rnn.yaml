@@ -1,5 +1,5 @@
 wandb_project: verdict_benchmark
-wandb_run_name: mlp_official
+wandb_run_name: rnn_official
 
 seed: 42
 epochs: 400
@@ -20,8 +20,12 @@ data:
   mat_path: D:/AiProjects/UCLmaster/dlfitting_verdict/VERDICT_training/AS_Z_fixdv/TrainingSet.mat
 
 model:
-  type: mlp
-  class_name: MLPRegressor
+  type: rnn
+  class_name: RNNRegressor
   params:
-    hidden_dims: [150, 150, 150]
-    activation: relu
+    hidden_dim: 128
+    num_layers: 2
+    rnn_type: LSTM
+    activation: tanh
+    dropout: 0.1
+    seq_len: 17  # 153 = 17 * 9, creates reasonable sequence length

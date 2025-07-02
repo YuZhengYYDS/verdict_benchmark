@@ -1,5 +1,5 @@
 wandb_project: verdict_benchmark
-wandb_run_name: mlp_official
+wandb_run_name: transformer_official
 
 seed: 42
 epochs: 400
@@ -20,8 +20,12 @@ data:
   mat_path: D:/AiProjects/UCLmaster/dlfitting_verdict/VERDICT_training/AS_Z_fixdv/TrainingSet.mat
 
 model:
-  type: mlp
-  class_name: MLPRegressor
+  type: transformer
+  class_name: TransformerRegressor
   params:
-    hidden_dims: [150, 150, 150]
+    d_model: 64
+    nhead: 4
+    num_layers: 2
+    dim_feedforward: 128
     activation: relu
+    dropout: 0.1

@@ -1,0 +1,30 @@
+wandb_project: verdict_benchmark
+wandb_run_name: cnn_advanced_signal_processing
+
+seed: 42
+epochs: 400
+batch_size: 16
+lr: 0.0003
+weight_decay: 0.0001
+train_ratio: 0.8
+early_stop_patience: 40
+
+scheduler:
+  type: CosineAnnealingWarmRestarts
+  T_0: 15
+  T_mult: 2
+  eta_min: 0.000001
+  warmup_epochs: 5
+
+data:
+  mat_path: D:/AiProjects/UCLmaster/dlfitting_verdict/VERDICT_training/AS_Z_fixdv/TrainingSet.mat
+
+model:
+  type: cnn
+  class_name: CNNRegressor
+  params:
+    base_filters: 64      # More filters for complex signal patterns
+    num_blocks: 4         # Deeper network for hierarchical feature learning
+    activation: swish     # Swish activation for better gradient flow
+    dropout: 0.1          # Lower dropout for deeper network
+    use_residual: true    # Essential for deeper networks

@@ -1,5 +1,5 @@
 wandb_project: verdict_benchmark
-wandb_run_name: mlp_official
+wandb_run_name: vae_regressor_official
 
 seed: 42
 epochs: 400
@@ -20,8 +20,12 @@ data:
   mat_path: D:/AiProjects/UCLmaster/dlfitting_verdict/VERDICT_training/AS_Z_fixdv/TrainingSet.mat
 
 model:
-  type: mlp
-  class_name: MLPRegressor
+  type: vae_regressor
+  class_name: VAERegressor
   params:
-    hidden_dims: [150, 150, 150]
+    latent_dim: 32
+    hidden_dims: [128, 64]
     activation: relu
+    dropout: 0.1
+    beta: 0.1  # KL weight
+    alpha: 0.5  # Reconstruction weight
