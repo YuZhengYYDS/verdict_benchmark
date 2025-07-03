@@ -211,11 +211,11 @@ dataset = VERDICTDataset(mat_path="path/to/TrainingSet.mat")
 Each model includes comprehensive documentation:
 
 ### Architecture Guides
-- **[MLP README](models/README_MLP.md)** - Simple feedforward networks
-- **[Residual MLP README](models/README_ResidualMLP.md)** - Skip connections and deep networks
-- **[RNN README](models/README_RNN.md)** - Sequence modeling with LSTM/GRU
-- **[Transformer README](models/README_Transformer.md)** - Attention mechanisms
-- **[VAE README](models/README_VAE.md)** - Variational autoencoders
+- **[MLP README](docs/models/README_MLP.md)** - Simple feedforward networks
+- **[Residual MLP README](docs/models/README_ResidualMLP.md)** - Skip connections and deep networks
+- **[RNN README](docs/models/README_RNN.md)** - Sequence modeling with LSTM/GRU
+- **[Transformer README](docs/models/README_Transformer.md)** - Attention mechanisms
+- **[VAE README](docs/models/README_VAE.md)** - Variational autoencoders
 
 ### Implementation Details
 - Mathematical foundations
