@@ -6,6 +6,13 @@
 
 A comprehensive benchmark suite for evaluating deep learning models on VERDICT (Vascular, Extracellular, and Restricted Diffusion for Cytometry in Tumours) parameter prediction from medical imaging data.
 
+## 🆕 Recent Updates
+
+- **July 2025**: Updated documentation structure with organized model guides
+- **June 2025**: Added advanced CNN configurations and MoE architecture
+- **May 2025**: Comprehensive evaluation framework with statistical analysis
+- **April 2025**: Initial release with 7 neural network architectures
+
 ## 🔬 What is VERDICT?
 
 VERDICT is an advanced diffusion MRI technique that provides quantitative biomarkers for tissue microstructure analysis. It models tissue as three distinct compartments:
@@ -18,7 +25,7 @@ This benchmark evaluates how well different neural network architectures can pre
 ## 🎯 Project Overview
 
 This benchmark provides:
-- **8 State-of-the-art Models**: From simple MLPs to advanced architectures
+- **9 State-of-the-art Models**: From simple MLPs to advanced architectures
 - **Comprehensive Evaluation**: Statistical analysis with confidence intervals
 - **Standardized Training**: Consistent protocols across all models
 - **Publication-ready Results**: LaTeX tables and research-grade figures
@@ -29,40 +36,40 @@ This benchmark provides:
 Our benchmark includes diverse neural network architectures, each with detailed documentation:
 
 ### 📊 Feedforward Networks
-- **[Multi-Layer Perceptron (MLP)](models/README_MLP.md)** - Simple yet effective baseline
+- **[Multi-Layer Perceptron (MLP)](docs/models/README_MLP.md)** - Simple yet effective baseline
   - 3-layer architecture with configurable activations
   - Fast training and inference
   - Excellent starting point for tabular data
 
-- **[Residual MLP](models/README_ResidualMLP.md)** - Enhanced with skip connections
+- **[Residual MLP](docs/models/README_ResidualMLP.md)** - Enhanced with skip connections
   - Solves vanishing gradient problem
   - Enables deeper network training
   - Better performance on complex patterns
 
 ### 🌊 Sequence Models
-- **[Recurrent Neural Network (RNN)](models/README_RNN.md)** - Temporal pattern modeling
+- **[Recurrent Neural Network (RNN)](docs/models/README_RNN.md)** - Temporal pattern modeling
   - LSTM/GRU variants for sequence processing
   - Adaptive input reshaping strategies
   - Captures sequential dependencies
 
-- **[Transformer](models/README_Transformer.md)** - Attention-based architecture
+- **[Transformer](docs/models/README_Transformer.md)** - Attention-based architecture
   - Multi-head self-attention mechanisms
   - Parallel processing capabilities
   - Global feature relationship modeling
 
 ### 🔍 Convolutional Networks
-- **[Convolutional Neural Network (CNN)](CNN_IMPROVEMENTS.md)** - Spatial pattern recognition
+- **[Convolutional Neural Network (CNN)](docs/models/CNN_IMPROVEMENTS.md)** - Spatial pattern recognition
   - 1D convolutions for feature extraction
   - Hierarchical representation learning
   - Translation-invariant features
 
 ### 🧠 Advanced Architectures
-- **[Variational Autoencoder (VAE)](models/README_VAE.md)** - Probabilistic latent modeling
+- **[Variational Autoencoder (VAE)](docs/models/README_VAE.md)** - Probabilistic latent modeling
   - Learns compressed representations
   - Uncertainty quantification
   - Generative capabilities
 
-- **[Mixture of Experts (MoE)](MOE_ARCHITECTURE.md)** - Ensemble learning
+- **[Mixture of Experts (MoE)](docs/models/MOE_ARCHITECTURE.md)** - Ensemble learning
   - Specialized expert networks
   - Dynamic routing mechanisms
   - Scalable model capacity
@@ -79,6 +86,17 @@ Our benchmark includes diverse neural network architectures, each with detailed 
 # Python 3.8+ required
 pip install torch torchvision torchaudio
 pip install -r requirements_eval.txt
+
+# Optional: Install in development mode
+pip install -e .
+```
+
+### Installation Verification
+```bash
+# Check if installation is working
+python -c "from models.mlp import MLP; print('✅ Models imported successfully')"
+python -c "from data.dataset import VERDICTDataset; print('✅ Dataset imported successfully')"
+python -c "from utils.metrics import calculate_metrics; print('✅ Utils imported successfully')"
 ```
 
 ### 1. Training Models
@@ -86,9 +104,10 @@ pip install -r requirements_eval.txt
 # Train individual models
 python train.py --config configs/mlp.yaml
 python train.py --config configs/transformer.yaml
+python train.py --config configs/cnn_advanced.yaml
 
-# Train all models (batch script)
-./run_training.bat  # Windows
+# Train all models (Windows)
+run_evaluation.bat
 ```
 
 ### 2. Evaluation
@@ -107,8 +126,25 @@ run_evaluation.bat
 Results are automatically saved to:
 - `evaluation_results/` - Basic performance metrics
 - `advanced_evaluation/` - Statistical analysis and publication-ready figures
+- `wandb/` - Weights & Biases experiment tracking
+- `checkpoints/` - Trained model weights and scalers
 
-## 📈 Performance Overview
+## � Model Implementation Status
+
+| Model | Implementation | Config | Documentation | Status |
+|-------|---------------|---------|---------------|---------|
+| MLP | ✅ `mlp.py` | ✅ `mlp.yaml` | ✅ `README_MLP.md` | Ready |
+| Residual MLP | ✅ `residual_mlp.py` | ✅ `residual_mlp.yaml` | ✅ `README_ResidualMLP.md` | Ready |
+| RNN/LSTM | ✅ `rnn.py` | ✅ `rnn.yaml` | ✅ `README_RNN.md` | Ready |
+| Transformer | ✅ `transformer.py` | ✅ `transformer.yaml` | ✅ `README_Transformer.md` | Ready |
+| CNN | ✅ `cnn.py` | ✅ `cnn_advanced.yaml` | ✅ `CNN_IMPROVEMENTS.md` | Ready |
+| VAE | ✅ `vae_regressor.py` | ✅ `vae_regressor.yaml` | ✅ `README_VAE.md` | Ready |
+| MoE | ✅ `moe_regressor.py` | ✅ `moe_regressor.yaml` | ✅ `MOE_ARCHITECTURE.md` | Ready |
+| TabNet | ⚠️ *Config only* | ❌ *Missing* | ❌ *Missing* | In Progress |
+
+*Note: TabNet implementation is referenced in performance tables but implementation files are not yet available in the repository.*
+
+## �📈 Performance Overview
 
 | Model | R² Score | RMSE | Training Time | Parameters |
 |-------|----------|------|---------------|------------|
@@ -138,9 +174,9 @@ Results are automatically saved to:
 - **Publication-ready Figures**: Research-grade visualizations
 
 ### Evaluation Documentation
-- **[Evaluation Guide](EVALUATION_README.md)** - Complete evaluation instructions
-- **[CNN Improvements](CNN_IMPROVEMENTS.md)** - CNN-specific enhancements
-- **[MoE Architecture](MOE_ARCHITECTURE.md)** - Mixture of Experts details
+- **[Evaluation Guide](docs/eval/EVALUATION_README.md)** - Complete evaluation instructions
+- **[CNN Improvements](docs/models/CNN_IMPROVEMENTS.md)** - CNN-specific enhancements
+- **[MoE Architecture](docs/models/MOE_ARCHITECTURE.md)** - Mixture of Experts details
 
 ## 🛠️ Project Structure
 
@@ -153,12 +189,26 @@ verdict_benchmark/
 │   ├── transformer.py           # Transformer
 │   ├── cnn.py                   # Convolutional Network
 │   ├── vae_regressor.py         # Variational Autoencoder
-│   ├── moe_regressor.py         # Mixture of Experts
-│   └── 📄 README_*.md           # Individual model docs
+│   └── moe_regressor.py         # Mixture of Experts
 ├── 📁 configs/                  # Configuration files
 │   ├── mlp.yaml                 # MLP settings
 │   ├── transformer.yaml         # Transformer settings
-│   └── ...                      # Other model configs
+│   ├── cnn_advanced.yaml        # CNN settings
+│   ├── rnn.yaml                 # RNN settings
+│   ├── residual_mlp.yaml        # Residual MLP settings
+│   ├── vae_regressor.yaml       # VAE settings
+│   └── moe_regressor.yaml       # MoE settings
+├── 📁 docs/                     # Documentation
+│   ├── models/                  # Model documentation
+│   │   ├── README_MLP.md        # MLP guide
+│   │   ├── README_ResidualMLP.md # Residual MLP guide
+│   │   ├── README_RNN.md        # RNN guide
+│   │   ├── README_Transformer.md # Transformer guide
+│   │   ├── README_VAE.md        # VAE guide
+│   │   ├── CNN_IMPROVEMENTS.md  # CNN enhancements
+│   │   └── MOE_ARCHITECTURE.md  # MoE architecture
+│   └── eval/                    # Evaluation documentation
+│       └── EVALUATION_README.md # Evaluation guide
 ├── 📁 data/                     # Dataset utilities
 │   ├── dataset.py               # Data loading
 │   └── demodataset.ipynb        # Data exploration
@@ -170,7 +220,8 @@ verdict_benchmark/
 ├── 📄 train.py                  # Training script
 ├── 📄 evaluate_models.py        # Basic evaluation
 ├── 📄 advanced_evaluate.py      # Advanced analysis
-└── 📄 run_evaluation.bat        # Automated evaluation
+├── 📄 run_evaluation.bat        # Automated evaluation
+└── 📄 setup.py                  # Package setup
 ```
 
 ## 🎓 Research Applications
@@ -291,19 +342,42 @@ If you use this benchmark in your research, please cite:
 ```bibtex
 @misc{verdict_benchmark2025,
   title={VERDICT Benchmark: Deep Learning for Medical Parameter Prediction},
-  author={[Your Name]},
+  author={VERDICT Benchmark Contributors},
   year={2025},
-  url={https://github.com/yourusername/verdict_benchmark}
+  month={July},
+  url={https://github.com/yourusername/verdict_benchmark},
+  note={A comprehensive benchmark suite for evaluating deep learning models on VERDICT parameter prediction}
 }
 ```
 
+## 🔗 Related Work
+
+- **VERDICT MRI**: Original diffusion MRI technique for tissue microstructure analysis
+- **Medical AI Benchmarks**: Related benchmarks in medical imaging and deep learning
+- **Tabular Learning**: Advances in neural networks for structured data
+- **PyTorch Ecosystem**: Deep learning frameworks and tools
+
 ## 📞 Support
 
+### Troubleshooting
+
+**Common Issues:**
+- **ImportError**: Make sure all dependencies are installed with `pip install -r requirements_eval.txt`
+- **CUDA Issues**: Ensure PyTorch is installed with CUDA support if using GPU
+- **Memory Errors**: Reduce batch size in config files for large models
+- **Config Errors**: Check YAML syntax and ensure all required fields are present
+
+**Performance Tips:**
+- Use GPU for faster training (CUDA compatible)
+- Adjust batch size based on available memory
+- Enable mixed precision training for memory efficiency
+- Use early stopping to prevent overfitting
+
 ### Documentation
-- **[Evaluation Guide](EVALUATION_README.md)** - Complete evaluation instructions
-- **[Model READMEs](models/)** - Individual architecture documentation
-- **[CNN Improvements](CNN_IMPROVEMENTS.md)** - CNN-specific enhancements
-- **[MoE Architecture](MOE_ARCHITECTURE.md)** - Mixture of Experts details
+- **[Evaluation Guide](docs/eval/EVALUATION_README.md)** - Complete evaluation instructions
+- **[Model READMEs](docs/models/)** - Individual architecture documentation
+- **[CNN Improvements](docs/models/CNN_IMPROVEMENTS.md)** - CNN-specific enhancements
+- **[MoE Architecture](docs/models/MOE_ARCHITECTURE.md)** - Mixture of Experts details
 
 ### Issues
 - Check existing issues on GitHub
@@ -322,8 +396,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - PyTorch and scientific computing ecosystem
 - Open source contributors
 
----
-
-**Ready to benchmark your next medical AI model?** 🚀
-
-Start with our [Quick Start Guide](#-quick-start) or explore individual [Model Documentation](models/) for detailed architecture information.
