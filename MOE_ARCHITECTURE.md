@@ -1,14 +1,14 @@
-# Mixture of Experts (MoE) Models for VERDICT Parameter Prediction
+# Mixture of Experts (MoE) Model for VERDICT Parameter Prediction
 
 ## Overview
 
-This document describes the Mixture of Experts (MoE) architectures implemented for the VERDICT benchmark. Two variants are provided to explore different approaches to expert routing and feature extraction.
+This document describes the Sparse Mixture of Experts (MoE) architecture implemented for the VERDICT benchmark. The sparse MoE approach uses selective expert activation to efficiently handle the complex signal-to-parameter mapping in VERDICT diffusion MRI.
 
 ## Architecture Details
 
-### 1. MoERegressor (Standard Mixture of Experts)
+### MoERegressor (Sparse Mixture of Experts)
 
-The `MoERegressor` implements a standard MoE architecture with the following components:
+The `MoERegressor` implements a sparse MoE architecture optimized for VERDICT parameter prediction with the following components:
 
 #### Components:
 - **Expert Networks**: 8 independent MLP networks, each specializing in different aspects of signal-to-parameter mapping
@@ -25,32 +25,22 @@ The `MoERegressor` implements a standard MoE architecture with the following com
 - `num_experts`: Number of expert networks (default: 8)
 - `expert_hidden_dims`: Hidden dimensions for each expert (default: [128, 64])
 - `gating_hidden_dim`: Hidden dimension for gating network (default: 64)
-- `top_k`: Number of experts to use per sample (default: 6)
+- `top_k`: Number of experts to use per sample (default: 6) - **Key sparse activation parameter**
 - `noise_std`: Standard deviation for load balancing noise (default: 0.1)
 
-### 2. AdaptiveMoERegressor (Hierarchical Mixture of Experts)
+## Why Sparse MoE for VERDICT?
 
-The `AdaptiveMoERegressor` implements a more sophisticated hierarchical approach:
+The sparse MoE approach is particularly well-suited for VERDICT parameter prediction due to:
 
-#### Components:
-- **Multi-scale Feature Extraction**: 1D convolutions to capture local signal patterns
-- **Hierarchical Gating**: Two-level gating (coarse → fine) for better expert organization
-- **Expert Groups**: 4 groups of 2 experts each, organized hierarchically
-
-#### Key Features:
-- **Coarse-to-Fine Selection**: First selects expert groups, then experts within groups
-- **Multi-scale Features**: Combines global signal features with local convolutional features
-- **Hierarchical Organization**: Better specialization through grouped experts
-
-#### Architecture Flow:
-1. Input → Multi-scale feature extraction (1D conv + global pooling)
-2. Coarse gating → Select among 4 expert groups
-3. Fine gating → Select experts within each group
-4. Hierarchical combination → Final prediction
+1. **Computational Efficiency**: Only activates top-k experts (6 out of 8), reducing computational cost
+2. **Signal Complexity**: VERDICT signals contain multiple biophysical components that benefit from specialized processing
+3. **Parameter Diversity**: The 8 VERDICT parameters represent different tissue properties requiring different modeling strategies
+4. **Noise Robustness**: Multiple experts provide redundancy and improve robustness to noise
+5. **Scalability**: Sparse activation enables handling of large-scale problems efficiently
 
 ## Training Configuration
 
-Both models use identical training configurations to ensure fair comparison:
+The sparse MoE uses the following optimized configuration:
 
 ```yaml
 lr: 0.0003
@@ -65,56 +55,60 @@ scheduler:
   T_mult: 2
   eta_min: 0.000001
   warmup_epochs: 5
+
+model:
+  num_experts: 8
+  expert_hidden_dims: [128, 64]
+  gating_hidden_dim: 64
+  top_k: 6  # Sparse activation: only 6 out of 8 experts
+  noise_std: 0.1
+  dropout: 0.1
 ```
-
-## Why MoE for VERDICT?
-
-1. **Signal Complexity**: VERDICT signals contain multiple biophysical components that may benefit from specialized processing
-2. **Parameter Diversity**: The 8 VERDICT parameters represent different tissue properties that may require different modeling strategies
-3. **Noise Robustness**: Multiple experts can provide redundancy and improve robustness to noise
-4. **Scalability**: MoE architectures can handle large-scale problems while maintaining efficiency through sparse activation
 
 ## Usage
 
-### Training Standard MoE:
+### Training Sparse MoE:
 ```bash
 python train.py --config configs/moe_regressor.yaml
 ```
 
-### Training Adaptive MoE:
-```bash
-python train.py --config configs/adaptive_moe_regressor.yaml
-```
+### Key Parameters:
+- `num_experts: 8` - Total number of expert networks
+- `top_k: 6` - Number of experts activated per sample (sparse activation)
+- `expert_hidden_dims: [128, 64]` - Hidden layer dimensions for each expert
+- `gating_hidden_dim: 64` - Gating network hidden dimension
 
 ## Expected Benefits
 
-1. **Improved Accuracy**: Specialized experts for different signal patterns
-2. **Better Generalization**: Reduced overfitting through ensemble-like behavior
+1. **Improved Accuracy**: Specialized experts for different signal patterns with sparse activation efficiency
+2. **Better Generalization**: Reduced overfitting through ensemble-like behavior with controlled capacity
 3. **Interpretability**: Gating weights reveal which experts are active for different inputs
-4. **Efficiency**: Sparse activation reduces computational cost during inference
+4. **Computational Efficiency**: Sparse activation (top-k) reduces computational cost during inference
+5. **Load Balancing**: Noise injection prevents expert collapse and ensures balanced utilization
 
 ## Monitoring
 
-Both models return gating weights along with predictions, enabling analysis of:
-- Expert utilization patterns
-- Load balancing effectiveness
+The sparse MoE model returns gating weights along with predictions, enabling analysis of:
+- Expert utilization patterns and load balancing
+- Sparse activation effectiveness (top-k selection)
 - Signal-specific expert preferences
+- Training stability through expert usage distribution
 
 Use W&B logs to monitor training progress and expert behavior patterns.
 
 ## File Structure
 
 ```
-models/moe_regressor.py          # MoE model implementations
-configs/moe_regressor.yaml       # Standard MoE configuration
-configs/adaptive_moe_regressor.yaml  # Adaptive MoE configuration
-test_moe.py                      # Model testing script
+models/moe_regressor.py          # Sparse MoE model implementation
+configs/moe_regressor.yaml       # Sparse MoE configuration
 ```
 
 ## Technical Notes
 
-- Both models handle tuple outputs (prediction, gating_weights)
+- Model handles tuple outputs (prediction, gating_weights)
 - Compatible with existing training infrastructure
 - Layer normalization used for stable training
 - Dropout regularization prevents overfitting
 - Residual connections improve gradient flow
+- Sparse activation via top-k expert selection for efficiency
+- Load balancing noise prevents expert collapse
