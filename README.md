@@ -1,30 +1,5 @@
 # VERDICT Benchmark: Deep Learning for Medical Parameter Prediction
 
-[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)]## � Model Implementation## �📈 Performance Overview
-
-| Model | R² Score | RMSE | Training Time | Parameters |
-|-------|----------|------|---------------|------------|
-| MLP | 0.85-0.92 | 0.08-0.12 | 10-20 min | ~50K |
-| Residual MLP | 0.87-0.94 | 0.07-0.11 | 15-25 min | ~60K |
-| RNN (LSTM) | 0.83-0.90 | 0.08-0.13 | 20-35 min | ~80K |
-| Transformer | 0.86-0.93 | 0.07-0.12 | 15-30 min | ~100K |
-| CNN | 0.88-0.95 | 0.06-0.10 | 25-40 min | ~120K |
-| DenseNet | 0.88-0.96 | 0.05-0.09 | 35-50 min | ~150K |
-| VAE | 0.85-0.92 | 0.08-0.12 | 25-40 min | ~150K |
-| MoE | 0.89-0.96 | 0.05-0.09 | 45-60 min | ~200K |
-| TabNet | 0.87-0.94 | 0.06-0.11 | 30-45 min | ~180K |odel | Implementation | Config | Documentation | Status |
-|-------|---------------|---------|---------------|---------|
-| MLP | ✅ `mlp.py` | ✅ `mlp.yaml` | ✅ `README_MLP.md` | Ready |
-| Residual MLP | ✅ `residual_mlp.py` | ✅ `residual_mlp.yaml` | ✅ `README_ResidualMLP.md` | Ready |
-| RNN/LSTM | ✅ `rnn.py` | ✅ `rnn.yaml` | ✅ `README_RNN.md` | Ready |
-| Transformer | ✅ `transformer.py` | ✅ `transformer.yaml` | ✅ `README_Transformer.md` | Ready |
-| CNN | ✅ `cnn.py` | ✅ `cnn_advanced.yaml` | ✅ `CNN_IMPROVEMENTS.md` | Ready |
-| DenseNet | ✅ `densenet_regressor.py` | ✅ `densenet_regressor.yaml` | ✅ `README_DenseNet.md` | Ready |
-| VAE | ✅ `vae_regressor.py` | ✅ `vae_regressor.yaml` | ✅ `README_VAE.md` | Ready |
-| MoE | ✅ `moe_regressor.py` | ✅ `moe_regressor.yaml` | ✅ `MOE_ARCHITECTURE.md` | Ready |thon.org)
-[![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-orange.svg)](https://pytorch.org)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-
 A comprehensive benchmark suite for evaluating deep learning models on VERDICT (Vascular, Extracellular, and Restricted Diffusion for Cytometry in Tumours) parameter prediction from medical imaging data.
 
 ## 🆕 Recent Updates
