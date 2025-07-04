@@ -1,0 +1,16 @@
+VERDICT BENCHMARK - MODEL EVALUATION SUMMARY
+==================================================
+
+Evaluation Date: 2025-07-04 01:54:04.176448
+Number of Models Evaluated: 6
+Test Set Size: 200000 samples
+Number of Parameters: 8
+
+TOP 3 PERFORMING MODELS:
+------------------------------
+1. residual_mlp (R² = 0.5321)
+2. transformer (R² = 0.5235)
+3. moe_regressor (R² = 0.4404)
+
+Best R² Score: 0.5321 (residual_mlp)
+Lowest RMSE: 0.3033 (moe_regressor)
