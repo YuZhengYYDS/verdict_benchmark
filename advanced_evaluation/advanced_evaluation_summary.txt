@@ -1,0 +1,26 @@
+VERDICT BENCHMARK - ADVANCED MODEL EVALUATION
+============================================================
+
+Evaluation Date: 2025-07-05 14:40:14.615361
+Number of Models: 8
+Test Set Size: 200000 samples
+Parameters: 8
+
+BEST PERFORMING MODELS:
+------------------------------
+Best R² Score: residual_mlp (0.5321)
+Best RMSE: moe_regressor (0.3033)
+Best MAE: residual_mlp (0.1437)
+
+STATISTICAL SIGNIFICANCE TESTS:
+----------------------------------------
+Significant differences found in 28 model pairs:
+  - cnn_vs_mlp
+  - cnn_vs_moe_regressor
+  - cnn_vs_residual_mlp
+  - cnn_vs_rnn
+  - cnn_vs_tabnet_regressor
+  ... and 23 more
+
+For complete statistical analysis, see significance_tests.png
+For publication-ready results, see results_table.tex

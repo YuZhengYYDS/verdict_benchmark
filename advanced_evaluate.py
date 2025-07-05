@@ -180,7 +180,7 @@ class AdvancedModelEvaluator(ModelEvaluator):
         plt.show()
     
     def create_parameter_wise_comparison(self):
-        """Create detailed parameter-wise comparison plots."""
+        """Create detailed parameter-wise comparison plots with improved readability for many models."""
         if not hasattr(self, 'results'):
             return
         
@@ -193,7 +193,7 @@ class AdvancedModelEvaluator(ModelEvaluator):
             for param_idx in range(n_params):
                 param_data.append({
                     'Model': model,
-                    'Parameter': f'Param {param_idx + 1}',
+                    'Parameter': f'P{param_idx + 1}',  # Shorter parameter names
                     'R²': self.results[model]['per_param_r2'][param_idx],
                     'MSE': self.results[model]['per_param_mse'][param_idx],
                     'MAE': self.results[model]['per_param_mae'][param_idx],
@@ -202,45 +202,138 @@ class AdvancedModelEvaluator(ModelEvaluator):
         
         df_params = pd.DataFrame(param_data)
         
-        # Create subplots
-        fig, axes = plt.subplots(2, 2, figsize=(16, 12))
-        fig.suptitle('Parameter-wise Model Performance Comparison', fontsize=16, fontweight='bold')
+        # Create two separate figures for better readability
+        # Figure 1: R² and Correlation (most important metrics)
+        fig1, axes1 = plt.subplots(1, 2, figsize=(18, 8))
+        fig1.suptitle('Parameter-wise Model Performance: Primary Metrics', fontsize=16, fontweight='bold')
         
-        # R² by parameter
-        sns.boxplot(data=df_params, x='Parameter', y='R²', ax=axes[0,0])
-        sns.stripplot(data=df_params, x='Parameter', y='R²', 
-                     hue='Model', ax=axes[0,0], size=8, alpha=0.7)
-        axes[0,0].set_title('R² Score Distribution by Parameter')
-        axes[0,0].legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+        # R² with heatmap style for better visualization
+        df_pivot_r2 = df_params.pivot(index='Model', columns='Parameter', values='R²')
+        sns.heatmap(df_pivot_r2, annot=True, fmt='.3f', cmap='viridis', 
+                   cbar_kws={'label': 'R² Score'}, ax=axes1[0])
+        axes1[0].set_title('R² Score by Model and Parameter')
+        axes1[0].set_xlabel('Parameter')
+        axes1[0].set_ylabel('Model')
         
-        # MSE by parameter
-        sns.boxplot(data=df_params, x='Parameter', y='MSE', ax=axes[0,1])
-        sns.stripplot(data=df_params, x='Parameter', y='MSE', 
-                     hue='Model', ax=axes[0,1], size=8, alpha=0.7)
-        axes[0,1].set_title('MSE Distribution by Parameter')
-        axes[0,1].legend(bbox_to_anchor=(1.05, 1), loc='upper left')
-        axes[0,1].set_yscale('log')
-        
-        # MAE by parameter
-        sns.boxplot(data=df_params, x='Parameter', y='MAE', ax=axes[1,0])
-        sns.stripplot(data=df_params, x='Parameter', y='MAE', 
-                     hue='Model', ax=axes[1,0], size=8, alpha=0.7)
-        axes[1,0].set_title('MAE Distribution by Parameter')
-        axes[1,0].legend(bbox_to_anchor=(1.05, 1), loc='upper left')
-        
-        # Correlation by parameter
-        sns.boxplot(data=df_params, x='Parameter', y='Correlation', ax=axes[1,1])
-        sns.stripplot(data=df_params, x='Parameter', y='Correlation', 
-                     hue='Model', ax=axes[1,1], size=8, alpha=0.7)
-        axes[1,1].set_title('Correlation Distribution by Parameter')
-        axes[1,1].legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+        # Correlation heatmap
+        df_pivot_corr = df_params.pivot(index='Model', columns='Parameter', values='Correlation')
+        sns.heatmap(df_pivot_corr, annot=True, fmt='.3f', cmap='plasma',
+                   cbar_kws={'label': 'Correlation'}, ax=axes1[1])
+        axes1[1].set_title('Correlation by Model and Parameter')
+        axes1[1].set_xlabel('Parameter')
+        axes1[1].set_ylabel('Model')
         
         plt.tight_layout()
-        plt.savefig(os.path.join(self.results_dir, 'parameter_wise_comparison.png'), 
+        plt.savefig(os.path.join(self.results_dir, 'parameter_wise_primary_metrics.png'), 
                    dpi=300, bbox_inches='tight')
         plt.show()
         
+        # Figure 2: Error metrics (MSE and MAE)
+        fig2, axes2 = plt.subplots(1, 2, figsize=(18, 8))
+        fig2.suptitle('Parameter-wise Model Performance: Error Metrics', fontsize=16, fontweight='bold')
+        
+        # MSE heatmap (log scale for better visualization)
+        df_pivot_mse = df_params.pivot(index='Model', columns='Parameter', values='MSE')
+        # Use log scale for MSE due to potentially large values
+        sns.heatmap(np.log10(df_pivot_mse + 1e-10), annot=df_pivot_mse.values, fmt='.2e', 
+                   cmap='Reds', cbar_kws={'label': 'log₁₀(MSE)'}, ax=axes2[0])
+        axes2[0].set_title('MSE by Model and Parameter (log scale)')
+        axes2[0].set_xlabel('Parameter')
+        axes2[0].set_ylabel('Model')
+        
+        # MAE heatmap
+        df_pivot_mae = df_params.pivot(index='Model', columns='Parameter', values='MAE')
+        sns.heatmap(df_pivot_mae, annot=True, fmt='.3f', cmap='Oranges',
+                   cbar_kws={'label': 'MAE'}, ax=axes2[1])
+        axes2[1].set_title('MAE by Model and Parameter')
+        axes2[1].set_xlabel('Parameter')
+        axes2[1].set_ylabel('Model')
+        
+        plt.tight_layout()
+        plt.savefig(os.path.join(self.results_dir, 'parameter_wise_error_metrics.png'), 
+                   dpi=300, bbox_inches='tight')
+        plt.show()
+        
+        # Figure 3: Summary statistics for each parameter
+        fig3, axes3 = plt.subplots(2, 2, figsize=(16, 12))
+        fig3.suptitle('Parameter Performance Summary Statistics', fontsize=16, fontweight='bold')
+        
+        # Best performing model per parameter for each metric
+        metrics = ['R²', 'MSE', 'MAE', 'Correlation']
+        metric_titles = ['Best R² by Parameter', 'Best MSE by Parameter', 
+                        'Best MAE by Parameter', 'Best Correlation by Parameter']
+        
+        for idx, (metric, title) in enumerate(zip(metrics, metric_titles)):
+            ax = axes3[idx//2, idx%2]
+            
+            # Find best model for each parameter
+            if metric in ['MSE', 'MAE']:
+                best_per_param = df_params.groupby('Parameter')[metric].idxmin()
+            else:
+                best_per_param = df_params.groupby('Parameter')[metric].idxmax()
+            
+            best_models = df_params.loc[best_per_param, ['Parameter', 'Model', metric]]
+            
+            # Create bar plot
+            bars = ax.bar(best_models['Parameter'], best_models[metric], 
+                         color=sns.color_palette("husl", len(best_models)))
+            ax.set_title(title)
+            ax.set_xlabel('Parameter')
+            ax.set_ylabel(metric)
+            ax.tick_params(axis='x', rotation=45)
+            
+            # Add model labels on bars
+            for i, (bar, model) in enumerate(zip(bars, best_models['Model'])):
+                height = bar.get_height()
+                ax.text(bar.get_x() + bar.get_width()/2., height + height*0.01,
+                       model, ha='center', va='bottom', fontsize=8, rotation=45)
+        
+        plt.tight_layout()
+        plt.savefig(os.path.join(self.results_dir, 'parameter_wise_best_performers.png'), 
+                   dpi=300, bbox_inches='tight')
+        plt.show()
+        
+        # Also save the legacy comparison plot but with improved styling
+        self._create_legacy_parameter_comparison(df_params)
+        
         return df_params
+    
+    def _create_legacy_parameter_comparison(self, df_params):
+        """Create the original style comparison but with improved readability."""
+        fig, axes = plt.subplots(2, 2, figsize=(20, 14))
+        fig.suptitle('Parameter-wise Model Performance (Detailed View)', fontsize=16, fontweight='bold')
+        
+        # Use smaller points and no overlapping stripplot
+        plot_params = {'size': 4, 'alpha': 0.6}
+        
+        # R² by parameter - use violin plot for better density visualization
+        sns.violinplot(data=df_params, x='Parameter', y='R²', ax=axes[0,0], 
+                      inner='quart', palette='viridis')
+        axes[0,0].set_title('R² Score Distribution by Parameter')
+        axes[0,0].tick_params(axis='x', rotation=45)
+        
+        # MSE by parameter - box plot only due to wide range
+        sns.boxplot(data=df_params, x='Parameter', y='MSE', ax=axes[0,1])
+        axes[0,1].set_title('MSE Distribution by Parameter')
+        axes[0,1].set_yscale('log')
+        axes[0,1].tick_params(axis='x', rotation=45)
+        
+        # MAE by parameter
+        sns.violinplot(data=df_params, x='Parameter', y='MAE', ax=axes[1,0],
+                      inner='quart', palette='plasma')
+        axes[1,0].set_title('MAE Distribution by Parameter')
+        axes[1,0].tick_params(axis='x', rotation=45)
+        
+        # Correlation by parameter
+        sns.violinplot(data=df_params, x='Parameter', y='Correlation', ax=axes[1,1],
+                      inner='quart', palette='coolwarm')
+        axes[1,1].set_title('Correlation Distribution by Parameter')
+        axes[1,1].tick_params(axis='x', rotation=45)
+        
+        plt.tight_layout()
+        plt.savefig(os.path.join(self.results_dir, 'parameter_wise_detailed_comparison.png'), 
+                   dpi=300, bbox_inches='tight')
+        plt.show()
     
     def create_model_complexity_analysis(self):
         """Analyze model complexity vs performance trade-offs."""

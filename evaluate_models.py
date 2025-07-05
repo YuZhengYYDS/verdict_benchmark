@@ -72,12 +72,40 @@ class ModelEvaluator:
         configs_dir = 'configs'
         checkpoints_dir = 'checkpoints'
         
+        # Get all available checkpoints
+        available_checkpoints = {}
+        for checkpoint_file in os.listdir(checkpoints_dir):
+            if checkpoint_file.endswith('_best.pt'):
+                model_name = checkpoint_file.replace('_best.pt', '')
+                available_checkpoints[model_name] = os.path.join(checkpoints_dir, checkpoint_file)
+        
+        # Try to match config files with checkpoints
         for config_file in os.listdir(configs_dir):
             if config_file.endswith('.yaml'):
-                model_name = config_file.replace('.yaml', '')
-                checkpoint_path = os.path.join(checkpoints_dir, f"{model_name}_best.pt")
+                config_name = config_file.replace('.yaml', '')
+                config_path = os.path.join(configs_dir, config_file)
                 
-                if os.path.exists(checkpoint_path):
+                # Try exact match first
+                if config_name in available_checkpoints:
+                    checkpoint_path = available_checkpoints[config_name]
+                    model_name = config_name
+                else:
+                    # Try to find a checkpoint that starts with the config model type
+                    with open(config_path, 'r', encoding='utf-8') as f:
+                        config = yaml.safe_load(f)
+                    
+                    model_type = config.get('model', {}).get('type', '')
+                    checkpoint_path = None
+                    model_name = None
+                    
+                    # Look for checkpoints that match the model type
+                    for checkpoint_name in available_checkpoints.keys():
+                        if checkpoint_name == model_type or checkpoint_name.startswith(f"{model_type}_"):
+                            checkpoint_path = available_checkpoints[checkpoint_name]
+                            model_name = checkpoint_name
+                            break
+                
+                if checkpoint_path and model_name:
                     config_path = os.path.join(configs_dir, config_file)
                     with open(config_path, 'r', encoding='utf-8') as f:
                         config = yaml.safe_load(f)
@@ -237,18 +265,25 @@ class ModelEvaluator:
         # Evaluate each model
         results = {}
         for model_name, model_info in model_configs.items():
-            print(f"\nEvaluating {model_name}...")
+            print(f"Evaluating {model_name}...")
             
-            model = self.load_model(model_name, model_info['config'])
-            if model is None:
-                continue
+            try:
+                model = self.load_model(model_name, model_info['config'])
+                if model is None:
+                    print(f"  ❌ Failed to load {model_name}")
+                    continue
+                    
+                metrics = self.evaluate_single_model(model_name, model, X_test, y_test)
+                results[model_name] = metrics
                 
-            metrics = self.evaluate_single_model(model_name, model, X_test, y_test)
-            results[model_name] = metrics
-            
-            print(f"  R² Score: {metrics['r2']:.4f}")
-            print(f"  RMSE: {metrics['rmse']:.4f}")
-            print(f"  MAE: {metrics['mae']:.4f}")
+                print(f"  ✅ R² Score: {metrics['r2']:.4f}")
+                print(f"  RMSE: {metrics['rmse']:.4f}")
+                print(f"  MAE: {metrics['mae']:.4f}")
+            except Exception as e:
+                print(f"  ❌ Error evaluating {model_name}: {e}")
+                import traceback
+                traceback.print_exc()
+                continue
         
         self.results = results
         return results
