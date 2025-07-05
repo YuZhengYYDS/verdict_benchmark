@@ -1,0 +1,33 @@
+wandb_project: verdict_benchmark
+wandb_run_name: tabnet_official
+
+seed: 42
+epochs: 400
+batch_size: 16
+lr: 0.0003
+weight_decay: 0.0001
+train_ratio: 0.8
+early_stop_patience: 40
+
+scheduler:
+  type: CosineAnnealingWarmRestarts
+  T_0: 15
+  T_mult: 2
+  eta_min: 0.000001
+  warmup_epochs: 5
+
+data:
+  mat_path: D:/AiProjects/UCLmaster/dlfitting_verdict/VERDICT_training/AS_Z_fixdv/TrainingSet.mat
+
+model:
+  type: tabnet_regressor
+  class_name: TabNetRegressor
+  params:
+    n_d: 16                    # Width of the decision prediction layer
+    n_a: 16                    # Width of the attention embedding  
+    n_steps: 4                 # Number of decision steps
+    gamma: 1.5                 # Coefficient for feature reusage in masks
+    n_independent: 2           # Number of independent GLU layers
+    n_shared: 2                # Number of shared GLU layers
+    virtual_batch_size: 128    # Ghost batch normalization batch size
+    momentum: 0.02             # Momentum for batch normalization
