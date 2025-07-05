@@ -1,27 +1,5 @@
 # VERDICT Benchmark: Deep Learning for Medical Parameter Prediction
 
-A comprehensive benchmark suite for evaluating deep lear## 📋 Model Implementatio## 📈 Performance Overview
-
-| Model | R² Score | RMSE | Training Time | Parameters |
-|-------|----------|------|---------------|------------|
-| MLP | 0.527 | 0.08-0.12 | 10-20 min | ~50K |
-| Residual MLP | 0.532 | 0.07-0.11 | 15-25 min | ~60K |
-| RNN (LSTM) | 0.480 | 0.08-0.13 | 20-35 min | ~80K |
-| Transformer | 0.524 | 0.07-0.12 | 15-30 min | ~100K |
-| CNN | 0.88-0.95 | 0.06-0.10 | 25-40 min | ~120K |
-| VAE | 0.463 | 0.08-0.12 | 25-40 min | ~150K |
-| MoE | 0.440 | 0.05-0.09 | 45-60 min | ~200K |
-| TabNet | 0.85-0.92* | 0.05-0.08* | 30-60 min | ~250K | Model | Implementation | Config | Documentation | Status |
-|-------|---------------|---------|---------------|---------|
-| MLP | ✅ `mlp.py` | ✅ `mlp.yaml` | ✅ `README_MLP.md` | Ready |
-| Residual MLP | ✅ `residual_mlp.py` | ✅ `residual_mlp.yaml` | ✅ `README_ResidualMLP.md` | Ready |
-| RNN/LSTM | ✅ `rnn.py` | ✅ `rnn.yaml` | ✅ `README_RNN.md` | Ready |
-| Transformer | ✅ `transformer.py` | ✅ `transformer.yaml` | ✅ `README_Transformer.md` | Ready |
-| CNN | ✅ `cnn.py` | ✅ `cnn_advanced.yaml` | ✅ `CNN_IMPROVEMENTS.md` | Ready |
-| VAE | ✅ `vae_regressor.py` | ✅ `vae_regressor.yaml` | ✅ `README_VAE.md` | Ready |
-| MoE | ✅ `moe_regressor.py` | ✅ `moe_regressor.yaml` | ✅ `MOE_ARCHITECTURE.md` | Ready |
-| TabNet | ✅ `tabnet_regressor.py` | ✅ `tabnet_regressor.yaml` | ✅ `README_TabNet.md` | Ready | on VERDICT (Vascular, Extracellular, and Restricted Diffusion for Cytometry in Tumours) parameter prediction from medical imaging data.
-
 ## 🔬 What is VERDICT?
 
 VERDICT is an advanced diffusion MRI technique that provides quantitative biomarkers for tissue microstructure analysis. It models tissue as three distinct compartments:
