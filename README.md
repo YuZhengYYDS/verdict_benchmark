@@ -2,13 +2,6 @@
 
 A comprehensive benchmark suite for evaluating deep learning models on VERDICT (Vascular, Extracellular, and Restricted Diffusion for Cytometry in Tumours) parameter prediction from medical imaging data.
 
-## 🆕 Recent Updates
-
-- **July 2025**: Updated documentation structure with organized model guides
-- **June 2025**: Added advanced CNN configurations and MoE architecture
-- **May 2025**: Comprehensive evaluation framework with statistical analysis
-- **April 2025**: Initial release with 7 neural network architectures
-
 ## 🔬 What is VERDICT?
 
 VERDICT is an advanced diffusion MRI technique that provides quantitative biomarkers for tissue microstructure analysis. It models tissue as three distinct compartments:
@@ -21,7 +14,7 @@ This benchmark evaluates how well different neural network architectures can pre
 ## 🎯 Project Overview
 
 This benchmark provides:
-- **8 State-of-the-art Models**: From simple MLPs to advanced architectures
+- **State-of-the-art Models**: From simple MLPs to advanced architectures
 - **Comprehensive Evaluation**: Statistical analysis with confidence intervals
 - **Standardized Training**: Consistent protocols across all models
 - **Publication-ready Results**: LaTeX tables and research-grade figures
@@ -37,7 +30,7 @@ Our benchmark includes diverse neural network architectures, each with detailed 
   - Fast training and inference
   - Excellent starting point for tabular data
 
-- **[Residual MLP](docs/models/README_ResidualMLP.md)** - Enhanced with skip connections
+- **[Simple ResNet (Residual MLP)](docs/models/README_ResidualMLP.md)** - Enhanced with skip connections
   - Solves vanishing gradient problem
   - Enables deeper network training
   - Better performance on complex patterns
@@ -58,11 +51,6 @@ Our benchmark includes diverse neural network architectures, each with detailed 
   - 1D convolutions for feature extraction
   - Hierarchical representation learning
   - Translation-invariant features
-
-- **[DenseNet Regressor](docs/models/README_DenseNet.md)** - Dense connections for feature reuse
-  - Dense blocks with feature concatenation
-  - Robust to noisy input signals
-  - Efficient gradient flow and feature learning
 
 ### 🧠 Advanced Architectures
 - **[Variational Autoencoder (VAE)](docs/models/README_VAE.md)** - Probabilistic latent modeling
@@ -146,14 +134,13 @@ Results are automatically saved to:
 
 | Model | R² Score | RMSE | Training Time | Parameters |
 |-------|----------|------|---------------|------------|
-| MLP | 0.85-0.92 | 0.08-0.12 | 10-20 min | ~50K |
-| Residual MLP | 0.87-0.94 | 0.07-0.11 | 15-25 min | ~60K |
-| RNN (LSTM) | 0.83-0.90 | 0.08-0.13 | 20-35 min | ~80K |
-| Transformer | 0.86-0.93 | 0.07-0.12 | 15-30 min | ~100K |
+| MLP | 0.527 | 0.08-0.12 | 10-20 min | ~50K |
+| Residual MLP | 0.532 | 0.07-0.11 | 15-25 min | ~60K |
+| RNN (LSTM) | 0.480 | 0.08-0.13 | 20-35 min | ~80K |
+| Transformer | 0.524 | 0.07-0.12 | 15-30 min | ~100K |
 | CNN | 0.88-0.95 | 0.06-0.10 | 25-40 min | ~120K |
-| VAE | 0.85-0.92 | 0.08-0.12 | 25-40 min | ~150K |
-| MoE | 0.89-0.96 | 0.05-0.09 | 45-60 min | ~200K |
-| TabNet | 0.87-0.94 | 0.06-0.11 | 30-45 min | ~180K |
+| VAE | 0.463 | 0.08-0.12 | 25-40 min | ~150K |
+| MoE | 0.440 | 0.05-0.09 | 45-60 min | ~200K |
 
 *Performance ranges reflect different hyperparameter configurations and dataset splits.*
 
@@ -169,12 +156,9 @@ Results are automatically saved to:
 - **Statistical Significance**: Pairwise model comparisons
 - **Bootstrap Confidence Intervals**: Uncertainty quantification
 - **Effect Sizes**: Practical significance assessment
-- **Publication-ready Figures**: Research-grade visualizations
 
 ### Evaluation Documentation
 - **[Evaluation Guide](docs/eval/EVALUATION_README.md)** - Complete evaluation instructions
-- **[CNN Improvements](docs/models/CNN_IMPROVEMENTS.md)** - CNN-specific enhancements
-- **[MoE Architecture](docs/models/MOE_ARCHITECTURE.md)** - Mixture of Experts details
 
 ## 🛠️ Project Structure
 
@@ -269,13 +253,7 @@ Each model includes comprehensive documentation:
 - **[Transformer README](docs/models/README_Transformer.md)** - Attention mechanisms
 - **[DenseNet README](docs/models/README_DenseNet.md)** - Dense connections and feature reuse
 - **[VAE README](docs/models/README_VAE.md)** - Variational autoencoders
-
-### Implementation Details
-- Mathematical foundations
-- Hyperparameter tuning guides
-- Performance characteristics
-- Best practices and common issues
-- Comparison with other approaches
+- **[MOE README](docs/models/MOE_ARCHITECTURE.md)** - Ensemble learning with specialized expert networks
 
 ## 🎯 Customization
 
@@ -344,10 +322,10 @@ If you use this benchmark in your research, please cite:
 ```bibtex
 @misc{verdict_benchmark2025,
   title={VERDICT Benchmark: Deep Learning for Medical Parameter Prediction},
-  author={VERDICT Benchmark Contributors},
+  author={Zheng Yu, Matteo Figini, ...},
   year={2025},
   month={July},
-  url={https://github.com/yourusername/verdict_benchmark},
+  url={NA},
   note={A comprehensive benchmark suite for evaluating deep learning models on VERDICT parameter prediction}
 }
 ```
