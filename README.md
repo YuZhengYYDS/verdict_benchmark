@@ -121,7 +121,7 @@ Results are automatically saved to:
 - `wandb/` - Weights & Biases experiment tracking
 - `checkpoints/` - Trained model weights and scalers
 
-## � Model Implementation Status
+##  Model Implementation Status
 
 | Model | Implementation | Config | Documentation | Status |
 |-------|---------------|---------|---------------|---------|
@@ -135,7 +135,7 @@ Results are automatically saved to:
 
 *Note: TabNet implementation is referenced in performance tables but implementation files are not yet available in the repository.*
 
-## �📈 Performance Overview
+## 📈 Performance Overview
 
 | Model | R² Score | RMSE | Training Time | Parameters |
 |-------|----------|------|---------------|------------|
