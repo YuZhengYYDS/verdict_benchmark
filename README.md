@@ -117,7 +117,6 @@ run_evaluation.bat
 
 ### 3. Results
 Results are automatically saved to:
-- `evaluation_results/` - Basic performance metrics
 - `advanced_evaluation/` - Statistical analysis and publication-ready figures
 - `wandb/` - Weights & Biases experiment tracking
 - `checkpoints/` - Trained model weights and scalers
