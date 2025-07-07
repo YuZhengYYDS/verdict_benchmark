@@ -137,15 +137,17 @@ Results are automatically saved to:
 
 ## 📈 Performance Overview
 
-| Model | R² Score | RMSE | Training Time | Parameters |
-|-------|----------|------|---------------|------------|
-| MLP | 0.527 | 0.08-0.12 | 10-20 min | ~50K |
-| Residual MLP | 0.532 | 0.07-0.11 | 15-25 min | ~60K |
-| RNN (LSTM) | 0.480 | 0.08-0.13 | 20-35 min | ~80K |
-| Transformer | 0.524 | 0.07-0.12 | 15-30 min | ~100K |
-| CNN | 0.88-0.95 | 0.06-0.10 | 25-40 min | ~120K |
-| VAE | 0.463 | 0.08-0.12 | 25-40 min | ~150K |
-| MoE | 0.440 | 0.05-0.09 | 45-60 min | ~200K |
+| Model | R² Score | RMSE | Parameters | Architecture Type |
+|-------|----------|------|------------|-------------------|
+| **Residual MLP** | 0.530 | 0.304 | ~60K | Feedforward + Skip Connections |
+| **CNN Advanced** | **0.532** | 0.305 | ~120K | Convolutional + Attention |
+| **MLP** | 0.527 | 0.305 | ~50K | Feedforward Baseline |
+| **Transformer** | 0.524 | 0.305 | ~100K | Self-Attention |
+| **TabNet** | 0.494 | 0.318 | ~150K | Attention-based Tabular |
+| **RNN (LSTM)** | 0.480 | 0.324 | ~80K | Sequential Processing |
+| **VAE** | 0.463 | 0.309 | ~150K | Probabilistic Latent |
+| **MoE** | 0.440 | **0.303** | ~200K | Ensemble Learning |
+
 
 *Performance ranges reflect different hyperparameter configurations and dataset splits. *TabNet performance estimates based on similar tabular regression tasks.*
 
