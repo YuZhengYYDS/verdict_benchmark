@@ -36,9 +36,7 @@ def build_scheduler(optimizer, scheduler_cfg):
             eta_min=scheduler_cfg.get('eta_min', 0.0)
         )
     else:
-        # 其他调度器类型
         cls = getattr(torch.optim.lr_scheduler, sched_type)
-        # 排除 type 和 warmup_epochs
         args = {k: v for k, v in scheduler_cfg.items() if k not in ['type', 'warmup_epochs']}
         scheduler = cls(optimizer, **args)
 
@@ -116,15 +114,12 @@ def main(config_path):
             optimizer.zero_grad()
             model_output = model(X)
             
-            # Handle models that return tuples (e.g., VAE, MoE, Ensemble, Hybrid)
             if isinstance(model_output, tuple):
-                pred = model_output[0]  # First element is always the prediction
-                # For models like MoE, second element might be diagnostic info, not loss
-                # Only treat as auxiliary loss if it's a scalar tensor
+                pred = model_output[0]  
+
                 aux_loss = 0.0
                 if len(model_output) > 1 and model_output[1] is not None:
                     potential_aux_loss = model_output[1]
-                    # Check if it's a scalar loss (0-dimensional tensor) or can be reduced to scalar
                     if isinstance(potential_aux_loss, torch.Tensor):
                         if potential_aux_loss.dim() == 0:  # Already scalar
                             aux_loss = potential_aux_loss
@@ -155,20 +150,17 @@ def main(config_path):
                 X, y = X.to(device), y.to(device)
                 model_output = model(X)
                 
-                # Handle models that return tuples (e.g., VAE, MoE, Ensemble, Hybrid)
                 if isinstance(model_output, tuple):
-                    pred = model_output[0]  # First element is always the prediction
+                    pred = model_output[0] 
                 else:
                     pred = model_output
                     
                 val_loss += criterion(pred, y).item() * X.size(0)
         val_loss /= len(val_loader.dataset)
 
-        # W&B 记录
         wandb.log({'epoch': epoch, 'train_loss': train_loss, 'val_loss': val_loss, 'lr': lr})
         print(f"Epoch {epoch}/{cfg['epochs']} | LR: {lr:.6e} | Train: {train_loss:.4f} | Val: {val_loss:.4f}")
 
-                # Early stopping
         if val_loss < best_loss:
             best_loss = val_loss
             patience = 0
@@ -181,7 +173,6 @@ def main(config_path):
                 print("Early stopping triggered.")
                 break
 
-    # 结束 W&B 记录
     wandb.finish()
     print("Training complete.")
 
