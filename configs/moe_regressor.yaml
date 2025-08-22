@@ -18,6 +18,7 @@ scheduler:
 
 data:
   mat_path: D:/AiProjects/UCLmaster/dlfitting_verdict/VERDICT_training/AS_Z_fixdv/TrainingSet.mat
+  parameter_names: ['fic', 'fee', 'Dic', 'R', 'Dpar', 'Dtra', 'theta', 'phi']
 
 model:
   type: moe_regressor

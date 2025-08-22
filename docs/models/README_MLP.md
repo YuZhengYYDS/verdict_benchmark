@@ -14,7 +14,7 @@ The MLP (Multi-Layer Perceptron) regressor is a simple feedforward neural networ
 
 ### Model Structure
 ```
-Input (153 features) → Hidden Layer 1 (150) → Hidden Layer 2 (150) → Hidden Layer 3 (150) → Output (3 parameters)
+Input (153 features) → Hidden Layer 1 (150) → Hidden Layer 2 (150) → Hidden Layer 3 (150) → Output (8 parameters)
 ```
 
 ## Configuration
@@ -64,7 +64,7 @@ The default configuration uses three hidden layers of 150 neurons each:
 - **Layer 1**: 153 → 150 with ReLU activation
 - **Layer 2**: 150 → 150 with ReLU activation  
 - **Layer 3**: 150 → 150 with ReLU activation
-- **Output**: 150 → 3 (linear)
+- **Output**: 150 → 8 (linear)
 
 ## Performance Characteristics
 
@@ -177,6 +177,4 @@ checkpoints/
 └── mlp_scaler.pkl     # Feature scaler
 ```
 
-## References
-- Goodfellow, I., Bengio, Y., & Courville, A. (2016). Deep Learning. MIT Press.
-- Rumelhart, D. E., Hinton, G. E., & Williams, R. J. (1986). Learning representations by back-propagating errors. Nature, 323(6088), 533-536.
+
