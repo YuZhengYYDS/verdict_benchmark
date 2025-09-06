@@ -420,6 +420,9 @@ class ModelEvaluator:
         models = list(self.results.keys())
         n_params = len(self.results[models[0]]['per_param_r2'])
         
+        # Get parameter names from data config
+        param_names = self.data_config.get('parameter_names', [f'P{i+1}' for i in range(n_params)])
+        
         # Create correlation matrix
         corr_matrix = np.zeros((len(models), n_params))
         for i, model in enumerate(models):
@@ -428,7 +431,7 @@ class ModelEvaluator:
         # Create heatmap
         plt.figure(figsize=(12, 8))
         sns.heatmap(corr_matrix, 
-                   xticklabels=[f'Param {i+1}' for i in range(n_params)],
+                   xticklabels=param_names,
                    yticklabels=models,
                    annot=True, 
                    cmap='RdYlBu_r', 
@@ -452,6 +455,9 @@ class ModelEvaluator:
         
         models = list(self.test_predictions.keys())
         n_params = self.test_targets.shape[1]
+        
+        # Get parameter names from data config
+        param_names = self.data_config.get('parameter_names', [f'P{i+1}' for i in range(n_params)])
         
         # Create plots in batches if too many models
         model_batches = [models[i:i+max_models_per_plot] 
@@ -487,7 +493,7 @@ class ModelEvaluator:
                     # Labels and title
                     ax.set_xlabel('Ground Truth')
                     ax.set_ylabel('Predictions')
-                    ax.set_title(f'{model_name} - Param {j+1}\n'
+                    ax.set_title(f'{model_name} - {param_names[j]}\n'
                                f'R² = {self.results[model_name]["per_param_r2"][j]:.3f}')
                     
                     # Add grid

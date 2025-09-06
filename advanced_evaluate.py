@@ -187,13 +187,16 @@ class AdvancedModelEvaluator(ModelEvaluator):
         models = list(self.results.keys())
         n_params = len(self.results[models[0]]['per_param_r2'])
         
+        # Get actual parameter names from data configuration
+        param_names = self.data_config.get('parameter_names', [f'P{i+1}' for i in range(n_params)])
+        
         # Prepare data
         param_data = []
         for model in models:
             for param_idx in range(n_params):
                 param_data.append({
                     'Model': model,
-                    'Parameter': f'P{param_idx + 1}',  # Shorter parameter names
+                    'Parameter': param_names[param_idx],  # Use actual parameter names
                     'R²': self.results[model]['per_param_r2'][param_idx],
                     'MSE': self.results[model]['per_param_mse'][param_idx],
                     'MAE': self.results[model]['per_param_mae'][param_idx],

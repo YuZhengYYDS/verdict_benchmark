@@ -1,6 +1,6 @@
 # VERDICT Benchmark: Deep Learning for Medical Parameter Prediction
 
-![VERDICT Multi-Patient Analysis](assets/multi_patients.png)
+![VERDICT Multi-Patient Analysis](assets/multi_models_top.png)
 
 ## 🔬 What is VERDICT?
 
