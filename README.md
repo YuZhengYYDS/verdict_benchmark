@@ -372,13 +372,15 @@ We welcome contributions! Please see our contribution guidelines:
 If you use this benchmark in your research, please cite:
 
 ```bibtex
-@misc{verdict_benchmark2025,
-  title={VERDICT Benchmark: Deep Learning for Medical Parameter Prediction},
-  author={Zheng Yu, Matteo Figini, ...},
-  year={2025},
-  month={July},
-  url={NA},
-  note={A comprehensive benchmark suite for evaluating deep learning models on VERDICT parameter prediction}
+@article{202602.0470,
+	doi = {10.20944/preprints202602.0470.v1},
+	url = {https://doi.org/10.20944/preprints202602.0470.v1},
+	year = 2026,
+	month = {February},
+	publisher = {Preprints},
+	author = {Zheng Yu},
+	title = {Benchmark: Deep Learning Methods for VERDICT MRI in Brain Tumour Microstructure Characterisation},
+	journal = {Preprints}
 }
 ```
 
